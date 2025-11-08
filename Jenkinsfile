@@ -1,40 +1,38 @@
 pipeline {
   agent any
+
   environment {
     IMAGE_NAME = 'shivamraina/multicloud'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
   }
+
   stages {
-    stage('Checkout') { steps { checkout scm } }
-    stage('Build') {
+    stage('Checkout') {
       steps {
-        sh 'mvn -B -DskipTests=false -f springboot-app/pom.xml clean package'
+        checkout scm
       }
     }
-    stage('Unit Tests') {
-      steps { sh 'mvn -f springboot-app/pom.xml test' }
+
+    stage('Build JAR') {
+      steps {
+        sh 'mvn -B -f springboot-app/pom.xml clean package'
+      }
     }
+
     stage('Build Docker Image') {
       steps {
+        sh 'ls -lh springboot-app/target/'  // 👈 Debug check
         sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
       }
     }
+
     stage('Push Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
           sh 'echo $PASS | docker login -u $USER --password-stdin'
           sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
         }
       }
     }
-    stage('Deploy via Ansible') {
-      steps {
-        sh "ansible-playbook -i ansible/inventories/multi-cloud ansible/playbooks/deploy.yml --extra-vars \"image=${IMAGE_NAME}:${IMAGE_TAG}\""
-      }
-    }
-  }
-  post {
-    success { echo 'Pipeline succeeded' }
-    failure { echo 'Pipeline failed' }
   }
 }
