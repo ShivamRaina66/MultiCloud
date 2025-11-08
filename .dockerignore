@@ -1,3 +1,4 @@
-springboot-app/target/
-*.log
+springboot-app/target/*.log
 .git
+terraform/
+ansible/
