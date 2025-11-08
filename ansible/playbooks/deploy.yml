@@ -1,7 +1,20 @@
+---
 - hosts: all
   become: yes
-  vars:
-    container_name: account-service
-    image: "{{ image }}"
-  roles:
-    - deploy_app
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Stop any running container
+      shell: |
+        docker stop bankpro || true
+        docker rm bankpro || true
+
+    - name: Pull latest image
+      shell: docker pull {{ image }}
+
+    - name: Run new container
+      shell: docker run -d --name bankpro -p 8080:8080 {{ image }}
