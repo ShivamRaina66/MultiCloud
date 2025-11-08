@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = 'shivamraina/multicloud'
+    IMAGE_NAME = 'shivamraina66/multicloud'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
   }
 
