@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AccountController {
 
+    @GetMapping("/")
+    public String home() {
+        return "✅ BankPro Microservice is running successfully!";
+    }
+
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("OK");
