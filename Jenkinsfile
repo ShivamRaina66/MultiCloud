@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    IMAGE_NAME = 'DOCKER_HUB_USER/DOCKER_HUB_REPO'
+    IMAGE_NAME = 'shivamraina/multicloud'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
   }
   stages {
