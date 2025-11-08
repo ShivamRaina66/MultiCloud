@@ -17,11 +17,13 @@
       shell: docker pull {{ image }}
 
     - name: Run new container on correct port based on cloud
+      args:
+        executable: /bin/bash
       shell: |
-        if [[ "{{ group_names }}" == *"aws"* ]]; then
+        if echo "{{ group_names }}" | grep -q "aws"; then
           echo "Detected AWS host — running on port 9090"
           docker run -d --name bankpro -p 9090:8080 {{ image }}
-        elif [[ "{{ group_names }}" == *"azure"* ]]; then
+        elif echo "{{ group_names }}" | grep -q "azure"; then
           echo "Detected Azure host — running on port 8080"
           docker run -d --name bankpro -p 8080:8080 {{ image }}
         else
