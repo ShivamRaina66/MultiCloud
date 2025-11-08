@@ -38,6 +38,7 @@ pipeline {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: 'azure-ssh', keyFileVariable: 'SSH_KEY')]) {
           sh '''
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i ansible/inventories/multi-cloud ansible/playbooks/deploy.yml \
               --extra-vars "image=${IMAGE_NAME}:${IMAGE_TAG}"
           '''
