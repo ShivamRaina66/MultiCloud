@@ -34,5 +34,15 @@ pipeline {
         }
       }
     }
+    stage('Deploy via Ansible (Multi-Cloud)') {
+      steps {
+        withCredentials([sshUserPrivateKey(credentialsId: 'azure-ssh', keyFileVariable: 'SSH_KEY')]) {
+          sh '''
+            ansible-playbook -i ansible/inventories/multi-cloud ansible/playbooks/deploy.yml \
+              --extra-vars "image=${IMAGE_NAME}:${IMAGE_TAG}"
+          '''
+        }
+      }
+    }
   }
 }

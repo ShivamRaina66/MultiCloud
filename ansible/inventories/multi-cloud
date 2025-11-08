@@ -1,10 +1,10 @@
 [aws]
 # replace with actual public IP and key path
-aws-1 ansible_host=AWS_VM_PUBLIC_IP ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
+aws-1 ansible_host=3.93.169.255 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 [azure]
 # replace with actual public IP and key path
-azure-1 ansible_host=AZURE_VM_PUBLIC_IP ansible_user=azureuser ansible_ssh_private_key_file=~/.ssh/id_rsa
+azure-1 ansible_host=74.225.194.71 ansible_user=azureuser ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
