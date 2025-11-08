@@ -1,0 +1,20 @@
+- name: Pull image
+  community.docker.docker_image:
+    name: "{{ image }}"
+    source: pull
+
+- name: Stop and remove existing container if present
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    state: absent
+    force_kill: yes
+  ignore_errors: yes
+
+- name: Run container
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    image: "{{ image }}"
+    state: started
+    restart_policy: always
+    ports:
+      - "8080:8080"

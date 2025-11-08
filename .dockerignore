@@ -1,0 +1,3 @@
+springboot-app/target/
+*.log
+.git

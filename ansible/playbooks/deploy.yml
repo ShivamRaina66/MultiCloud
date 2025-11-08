@@ -1,0 +1,7 @@
+- hosts: all
+  become: yes
+  vars:
+    container_name: account-service
+    image: "{{ image }}"
+  roles:
+    - deploy_app

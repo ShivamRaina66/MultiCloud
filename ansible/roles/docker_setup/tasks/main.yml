@@ -1,0 +1,16 @@
+- name: Install apt packages
+  apt:
+    name: ['apt-transport-https','ca-certificates','curl','software-properties-common']
+    state: present
+    update_cache: yes
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+
+- name: Ensure Docker service running
+  service:
+    name: docker
+    state: started
+    enabled: yes
